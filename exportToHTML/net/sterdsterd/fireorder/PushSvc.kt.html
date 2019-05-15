@@ -1,0 +1,108 @@
+<html>
+<head>
+<title>PushSvc.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #629755; font-style: italic;}
+.s4 { color: #6897bb;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+PushSvc.kt</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">package </span><span class="s1">net.sterdsterd.fireorder</span>
+<a name="l2"><span class="ln">2    </span></a>
+<a name="l3"><span class="ln">3    </span></a>import com.google.firebase.messaging.FirebaseMessagingService
+<a name="l4"><span class="ln">4    </span></a>import com.google.firebase.messaging.RemoteMessage
+<a name="l5"><span class="ln">5    </span></a>import android.app.NotificationManager
+<a name="l6"><span class="ln">6    </span></a>import android.R
+<a name="l7"><span class="ln">7    </span></a>import android.app.Notification
+<a name="l8"><span class="ln">8    </span></a>import android.app.Notification.DEFAULT_SOUND
+<a name="l9"><span class="ln">9    </span></a>import android.app.Notification.DEFAULT_VIBRATE
+<a name="l10"><span class="ln">10   </span></a>import android.app.NotificationChannel
+<a name="l11"><span class="ln">11   </span></a>import android.os.Build
+<a name="l12"><span class="ln">12   </span></a>import android.app.PendingIntent
+<a name="l13"><span class="ln">13   </span></a>import android.content.Context
+<a name="l14"><span class="ln">14   </span></a>import android.content.Intent
+<a name="l15"><span class="ln">15   </span></a>import android.graphics.BitmapFactory
+<a name="l16"><span class="ln">16   </span></a>import android.graphics.Color
+<a name="l17"><span class="ln">17   </span></a>import android.media.RingtoneManager
+<a name="l18"><span class="ln">18   </span></a>import android.provider.SyncStateContract
+<a name="l19"><span class="ln">19   </span></a>import android.util.Log
+<a name="l20"><span class="ln">20   </span></a>import androidx.core.app.NotificationCompat
+<a name="l21"><span class="ln">21   </span></a>
+<a name="l22"><span class="ln">22   </span></a>
+<a name="l23"><span class="ln">23   </span></a><span class="s0">class </span><span class="s1">PushSvc : FirebaseMessagingService() {</span>
+<a name="l24"><span class="ln">24   </span></a>    private <span class="s0">val </span><span class="s1">TAG = </span><span class="s2">&quot;FirebaseService&quot;</span>
+<a name="l25"><span class="ln">25   </span></a>
+<a name="l26"><span class="ln">26   </span></a>    <span class="s3">/**</span>
+<a name="l27"><span class="ln">27   </span></a>     * FirebaseInstanceIdService is deprecated.
+<a name="l28"><span class="ln">28   </span></a>     * this is new on firebase-messaging:17.1.0
+<a name="l29"><span class="ln">29   </span></a>     */
+<a name="l30"><span class="ln">30   </span></a>    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onNewToken(token: String?) {</span>
+<a name="l31"><span class="ln">31   </span></a>        Log.d(TAG<span class="s0">, </span><span class="s2">&quot;new Token: </span><span class="s0">$</span><span class="s1">token</span><span class="s2">&quot;</span><span class="s1">)</span>
+<a name="l32"><span class="ln">32   </span></a>    }
+<a name="l33"><span class="ln">33   </span></a>
+<a name="l34"><span class="ln">34   </span></a>    <span class="s3">/**</span>
+<a name="l35"><span class="ln">35   </span></a>     * this method will be triggered every time there is new FCM Message.
+<a name="l36"><span class="ln">36   </span></a>     */
+<a name="l37"><span class="ln">37   </span></a>    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onMessageReceived(remoteMessage: RemoteMessage) {</span>
+<a name="l38"><span class="ln">38   </span></a>        <span class="s0">val </span><span class="s1">data = remoteMessage.data</span>
+<a name="l39"><span class="ln">39   </span></a>        <span class="s0">val </span><span class="s1">title = data.get(</span><span class="s2">&quot;title&quot;</span><span class="s1">)</span>
+<a name="l40"><span class="ln">40   </span></a>        <span class="s0">val </span><span class="s1">body = data.get(</span><span class="s2">&quot;body&quot;</span><span class="s1">)</span>
+<a name="l41"><span class="ln">41   </span></a>
+<a name="l42"><span class="ln">42   </span></a>        <span class="s0">if</span><span class="s1">(remoteMessage.data != </span><span class="s0">null</span><span class="s1">) {</span>
+<a name="l43"><span class="ln">43   </span></a>            sendNotification(title!!<span class="s0">, </span><span class="s1">body!!)</span>
+<a name="l44"><span class="ln">44   </span></a>            Log.d(<span class="s2">&quot;arst&quot;</span><span class="s0">, </span><span class="s1">body)</span>
+<a name="l45"><span class="ln">45   </span></a>        }
+<a name="l46"><span class="ln">46   </span></a>    }
+<a name="l47"><span class="ln">47   </span></a>
+<a name="l48"><span class="ln">48   </span></a>    private <span class="s0">fun </span><span class="s1">sendNotification(title: String</span><span class="s0">, </span><span class="s1">body: String) {</span>
+<a name="l49"><span class="ln">49   </span></a>
+<a name="l50"><span class="ln">50   </span></a>        <span class="s0">val </span><span class="s1">intent = Intent(</span><span class="s0">this, </span><span class="s1">MainActivity::</span><span class="s0">class</span><span class="s1">.java).apply {</span>
+<a name="l51"><span class="ln">51   </span></a>            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+<a name="l52"><span class="ln">52   </span></a>            putExtra(<span class="s2">&quot;Notification&quot;</span><span class="s0">, </span><span class="s1">body)</span>
+<a name="l53"><span class="ln">53   </span></a>        }
+<a name="l54"><span class="ln">54   </span></a>
+<a name="l55"><span class="ln">55   </span></a>        <span class="s0">val </span><span class="s1">CHANNEL_ID = </span><span class="s2">&quot;orderNotification&quot;</span>
+<a name="l56"><span class="ln">56   </span></a>        <span class="s0">val </span><span class="s1">CHANNEL_NAME = </span><span class="s2">&quot;주문 현황&quot;</span>
+<a name="l57"><span class="ln">57   </span></a>        <span class="s0">val </span><span class="s1">description = </span><span class="s2">&quot;주문 현황을 알려드립니다.&quot;</span>
+<a name="l58"><span class="ln">58   </span></a>        <span class="s0">val </span><span class="s1">importance = NotificationManager.IMPORTANCE_HIGH</span>
+<a name="l59"><span class="ln">59   </span></a>
+<a name="l60"><span class="ln">60   </span></a>        <span class="s0">var </span><span class="s1">notificationManager: NotificationManager = </span><span class="s0">this</span><span class="s1">.getSystemService(Context.NOTIFICATION_SERVICE) </span><span class="s0">as </span><span class="s1">NotificationManager</span>
+<a name="l61"><span class="ln">61   </span></a>
+<a name="l62"><span class="ln">62   </span></a>        <span class="s0">if</span><span class="s1">(android.os.Build.VERSION.SDK_INT &gt;= android.os.Build.VERSION_CODES.O) {</span>
+<a name="l63"><span class="ln">63   </span></a>            <span class="s0">val </span><span class="s1">channel = NotificationChannel(CHANNEL_ID</span><span class="s0">, </span><span class="s1">CHANNEL_NAME</span><span class="s0">, </span><span class="s1">importance)</span>
+<a name="l64"><span class="ln">64   </span></a>            channel.description = description
+<a name="l65"><span class="ln">65   </span></a>            channel.enableLights(<span class="s0">true</span><span class="s1">)</span>
+<a name="l66"><span class="ln">66   </span></a>            channel.lightColor = Color.CYAN
+<a name="l67"><span class="ln">67   </span></a>            channel.enableVibration(<span class="s0">true</span><span class="s1">)</span>
+<a name="l68"><span class="ln">68   </span></a>            channel.setShowBadge(<span class="s0">true</span><span class="s1">)</span>
+<a name="l69"><span class="ln">69   </span></a>            notificationManager.createNotificationChannel(channel)
+<a name="l70"><span class="ln">70   </span></a>        }
+<a name="l71"><span class="ln">71   </span></a>
+<a name="l72"><span class="ln">72   </span></a>        <span class="s0">var </span><span class="s1">pendingIntent = PendingIntent.getActivity(</span><span class="s0">this, </span><span class="s4">0</span><span class="s0">, </span><span class="s1">intent</span><span class="s0">, </span><span class="s1">PendingIntent.FLAG_ONE_SHOT)</span>
+<a name="l73"><span class="ln">73   </span></a>        <span class="s0">val </span><span class="s1">notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)</span>
+<a name="l74"><span class="ln">74   </span></a>
+<a name="l75"><span class="ln">75   </span></a>        <span class="s0">var </span><span class="s1">notificationBuilder = NotificationCompat.Builder(</span><span class="s0">this, </span><span class="s1">CHANNEL_ID)</span>
+<a name="l76"><span class="ln">76   </span></a>            .setLargeIcon(BitmapFactory.decodeResource(resources<span class="s0">, </span><span class="s1">R.mipmap.sym_def_app_icon))</span>
+<a name="l77"><span class="ln">77   </span></a>            .setSmallIcon(R.mipmap.sym_def_app_icon)
+<a name="l78"><span class="ln">78   </span></a>            .setContentTitle(title)
+<a name="l79"><span class="ln">79   </span></a>            .setContentText(body)
+<a name="l80"><span class="ln">80   </span></a>            .setAutoCancel(<span class="s0">true</span><span class="s1">)</span>
+<a name="l81"><span class="ln">81   </span></a>            .setSound(notificationSound)
+<a name="l82"><span class="ln">82   </span></a>            .setContentIntent(pendingIntent)
+<a name="l83"><span class="ln">83   </span></a>
+<a name="l84"><span class="ln">84   </span></a>        notificationManager.notify(<span class="s4">0</span><span class="s0">, </span><span class="s1">notificationBuilder.build())</span>
+<a name="l85"><span class="ln">85   </span></a>    }
+<a name="l86"><span class="ln">86   </span></a>
+<a name="l87"><span class="ln">87   </span></a>}</pre>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?actionBarSize"
+    android:id="@+id/coordinator">
+
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="메뉴를 추가해보세요."
+        android:layout_marginTop="32dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:id="@+id/emptyTv"
+        android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/editList"
+        android:paddingTop="8dp"
+        android:paddingBottom="88dp"
+        android:clipToPadding="false">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="88dp"
+        android:layout_gravity="bottom|center"
+        android:id="@+id/addFab"
+        app:icon="@drawable/ic_add"
+        app:backgroundTint="@color/colorAccent"
+        app:iconTint="#fff"
+        android:textColor="#fff"
+        android:text="ADD"
+        android:textStyle="bold"
+        style="@style/TextAppearance"
+        android:textSize="16sp"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

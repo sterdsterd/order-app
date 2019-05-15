@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_marginTop="?actionBarSize">
+
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+		android:layout_marginTop="32dp"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:text="밀린 주문이 없어요."
+		android:layout_marginTop="32dp"
+		android:textSize="18sp"
+		android:textStyle="bold"
+		android:id="@+id/emptyTv"
+		android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/orderList"
+		android:paddingBottom="16dp"
+		android:paddingTop="8dp"
+		android:clipToPadding="false">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</RelativeLayout>

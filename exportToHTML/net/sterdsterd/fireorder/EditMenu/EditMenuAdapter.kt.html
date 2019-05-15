@@ -1,0 +1,142 @@
+<html>
+<head>
+<title>EditMenuAdapter.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+EditMenuAdapter.kt</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">package </span><span class="s1">net.sterdsterd.fireorder.EditMenu</span>
+<a name="l2"><span class="ln">2    </span></a>
+<a name="l3"><span class="ln">3    </span></a>import android.app.ProgressDialog
+<a name="l4"><span class="ln">4    </span></a>import android.text.Editable
+<a name="l5"><span class="ln">5    </span></a>import android.text.TextWatcher
+<a name="l6"><span class="ln">6    </span></a>import android.util.Log
+<a name="l7"><span class="ln">7    </span></a>import android.view.LayoutInflater
+<a name="l8"><span class="ln">8    </span></a>import android.view.View
+<a name="l9"><span class="ln">9    </span></a>import android.view.ViewGroup
+<a name="l10"><span class="ln">10   </span></a>import android.widget.Toast
+<a name="l11"><span class="ln">11   </span></a>import androidx.fragment.app.FragmentActivity
+<a name="l12"><span class="ln">12   </span></a>import androidx.recyclerview.widget.RecyclerView
+<a name="l13"><span class="ln">13   </span></a>import com.google.firebase.database.FirebaseDatabase
+<a name="l14"><span class="ln">14   </span></a>import com.google.firebase.storage.FirebaseStorage
+<a name="l15"><span class="ln">15   </span></a>import gun0912.tedbottompicker.TedBottomPicker
+<a name="l16"><span class="ln">16   </span></a>import kotlinx.android.synthetic.main.item_edit.view.*
+<a name="l17"><span class="ln">17   </span></a>import net.sterdsterd.fireorder.MenuData
+<a name="l18"><span class="ln">18   </span></a>import net.sterdsterd.fireorder.R
+<a name="l19"><span class="ln">19   </span></a>import com.bumptech.glide.Glide
+<a name="l20"><span class="ln">20   </span></a>import com.bumptech.glide.request.RequestOptions
+<a name="l21"><span class="ln">21   </span></a>import kotlinx.android.synthetic.main.fragment_edit.*
+<a name="l22"><span class="ln">22   </span></a>
+<a name="l23"><span class="ln">23   </span></a>
+<a name="l24"><span class="ln">24   </span></a><span class="s0">class </span><span class="s1">EditMenuAdapter(</span><span class="s0">val </span><span class="s1">items : MutableList&lt;MenuData&gt;</span><span class="s0">, </span><span class="s1">act: FragmentActivity</span><span class="s0">, </span><span class="s1">fra: EditMenuFragment) : RecyclerView.Adapter&lt;EditMenuAdapter.MainViewHolder&gt;() {</span>
+<a name="l25"><span class="ln">25   </span></a>
+<a name="l26"><span class="ln">26   </span></a>    <span class="s0">var </span><span class="s1">activity = act</span>
+<a name="l27"><span class="ln">27   </span></a>    <span class="s0">var </span><span class="s1">fragment = fra</span>
+<a name="l28"><span class="ln">28   </span></a>
+<a name="l29"><span class="ln">29   </span></a>    override <span class="s0">fun </span><span class="s1">onCreateViewHolder(parent: ViewGroup</span><span class="s0">, </span><span class="s1">p1: Int) = MainViewHolder(parent)</span>
+<a name="l30"><span class="ln">30   </span></a>
+<a name="l31"><span class="ln">31   </span></a>    override <span class="s0">fun </span><span class="s1">getItemCount(): Int = items.size</span>
+<a name="l32"><span class="ln">32   </span></a>
+<a name="l33"><span class="ln">33   </span></a>    override <span class="s0">fun </span><span class="s1">getItemId(position: Int) = position.toLong()</span>
+<a name="l34"><span class="ln">34   </span></a>
+<a name="l35"><span class="ln">35   </span></a>    override <span class="s0">fun </span><span class="s1">getItemViewType(position: Int) = position</span>
+<a name="l36"><span class="ln">36   </span></a>
+<a name="l37"><span class="ln">37   </span></a>    override <span class="s0">fun </span><span class="s1">onBindViewHolder(holder: MainViewHolder</span><span class="s0">, </span><span class="s1">position: Int) {</span>
+<a name="l38"><span class="ln">38   </span></a>
+<a name="l39"><span class="ln">39   </span></a>        holder.nameET.setText(items[position].name)
+<a name="l40"><span class="ln">40   </span></a>        holder.nameET.addTextChangedListener(<span class="s0">object </span><span class="s1">: TextWatcher {</span>
+<a name="l41"><span class="ln">41   </span></a>            override <span class="s0">fun </span><span class="s1">onTextChanged(s: CharSequence?</span><span class="s0">, </span><span class="s1">start: Int</span><span class="s0">, </span><span class="s1">before: Int</span><span class="s0">, </span><span class="s1">count: Int) { }</span>
+<a name="l42"><span class="ln">42   </span></a>
+<a name="l43"><span class="ln">43   </span></a>            override <span class="s0">fun </span><span class="s1">beforeTextChanged(s: CharSequence?</span><span class="s0">, </span><span class="s1">start: Int</span><span class="s0">, </span><span class="s1">count: Int</span><span class="s0">, </span><span class="s1">after: Int) { }</span>
+<a name="l44"><span class="ln">44   </span></a>
+<a name="l45"><span class="ln">45   </span></a>            override <span class="s0">fun </span><span class="s1">afterTextChanged(p0: Editable?) {</span>
+<a name="l46"><span class="ln">46   </span></a>                FirebaseDatabase.getInstance().getReference(<span class="s2">&quot;menuList&quot;</span><span class="s1">).child(items[position].id.toString()).child(</span><span class="s2">&quot;name&quot;</span><span class="s1">).setValue(holder.nameET.text.toString())</span>
+<a name="l47"><span class="ln">47   </span></a>                fragment.menuList.add(position<span class="s0">, </span><span class="s1">MenuData(fragment.menuList[position].id</span><span class="s0">, </span><span class="s1">items[position].name</span><span class="s0">, </span><span class="s1">fragment.menuList[position].price</span><span class="s0">, </span><span class="s1">fragment.menuList[position].src))</span>
+<a name="l48"><span class="ln">48   </span></a>                fragment.menuList.removeAt(position + <span class="s3">1</span><span class="s1">)</span>
+<a name="l49"><span class="ln">49   </span></a>            }
+<a name="l50"><span class="ln">50   </span></a>        })
+<a name="l51"><span class="ln">51   </span></a>        holder.priceET.setText(items[position].price.toString())
+<a name="l52"><span class="ln">52   </span></a>        holder.priceET.addTextChangedListener(<span class="s0">object </span><span class="s1">: TextWatcher {</span>
+<a name="l53"><span class="ln">53   </span></a>            override <span class="s0">fun </span><span class="s1">onTextChanged(s: CharSequence?</span><span class="s0">, </span><span class="s1">start: Int</span><span class="s0">, </span><span class="s1">before: Int</span><span class="s0">, </span><span class="s1">count: Int) { }</span>
+<a name="l54"><span class="ln">54   </span></a>
+<a name="l55"><span class="ln">55   </span></a>            override <span class="s0">fun </span><span class="s1">beforeTextChanged(s: CharSequence?</span><span class="s0">, </span><span class="s1">start: Int</span><span class="s0">, </span><span class="s1">count: Int</span><span class="s0">, </span><span class="s1">after: Int) { }</span>
+<a name="l56"><span class="ln">56   </span></a>
+<a name="l57"><span class="ln">57   </span></a>            override <span class="s0">fun </span><span class="s1">afterTextChanged(p0: Editable?) {</span>
+<a name="l58"><span class="ln">58   </span></a>                <span class="s0">var </span><span class="s1">prc = </span><span class="s3">0</span>
+<a name="l59"><span class="ln">59   </span></a>                <span class="s0">if</span><span class="s1">(holder.priceET.text.isNotEmpty()) prc = holder.priceET.text.toString().toInt()</span>
+<a name="l60"><span class="ln">60   </span></a>                <span class="s0">else </span><span class="s1">holder.priceET.setText(</span><span class="s2">&quot;0&quot;</span><span class="s1">)</span>
+<a name="l61"><span class="ln">61   </span></a>                FirebaseDatabase.getInstance().getReference(<span class="s2">&quot;menuList&quot;</span><span class="s1">).child(items[position].id.toString()).child(</span><span class="s2">&quot;price&quot;</span><span class="s1">).setValue(prc)</span>
+<a name="l62"><span class="ln">62   </span></a>                fragment.menuList.add(position<span class="s0">, </span><span class="s1">MenuData(fragment.menuList[position].id</span><span class="s0">, </span><span class="s1">fragment.menuList[position].name</span><span class="s0">, </span><span class="s1">prc</span><span class="s0">, </span><span class="s1">fragment.menuList[position].src))</span>
+<a name="l63"><span class="ln">63   </span></a>                fragment.menuList.removeAt(position + <span class="s3">1</span><span class="s1">)</span>
+<a name="l64"><span class="ln">64   </span></a>            }
+<a name="l65"><span class="ln">65   </span></a>        })
+<a name="l66"><span class="ln">66   </span></a>
+<a name="l67"><span class="ln">67   </span></a>        holder.getImg.setOnClickListener { v -&gt;
+<a name="l68"><span class="ln">68   </span></a>            TedBottomPicker.with(activity).show {
+<a name="l69"><span class="ln">69   </span></a>                Log.e(<span class="s2">&quot;URI&quot;</span><span class="s0">, </span><span class="s1">it.toString())</span>
+<a name="l70"><span class="ln">70   </span></a>
+<a name="l71"><span class="ln">71   </span></a>                <span class="s0">var </span><span class="s1">progressDialog = ProgressDialog(v.context)</span>
+<a name="l72"><span class="ln">72   </span></a>                progressDialog.setTitle(<span class="s2">&quot;Uploading...&quot;</span><span class="s1">)</span>
+<a name="l73"><span class="ln">73   </span></a>                progressDialog.setMessage(<span class="s2">&quot;Uploading Image&quot;</span><span class="s1">)</span>
+<a name="l74"><span class="ln">74   </span></a>                progressDialog.show()
+<a name="l75"><span class="ln">75   </span></a>
+<a name="l76"><span class="ln">76   </span></a>                <span class="s0">var </span><span class="s1">fbStorage = FirebaseStorage.getInstance()</span>
+<a name="l77"><span class="ln">77   </span></a>                <span class="s0">var </span><span class="s1">filename = </span><span class="s2">&quot;</span><span class="s0">${</span><span class="s1">items[position].id</span><span class="s0">}</span><span class="s2">.png&quot;</span>
+<a name="l78"><span class="ln">78   </span></a>                <span class="s0">var </span><span class="s1">storageRef = fbStorage.getReferenceFromUrl(</span><span class="s2">&quot;gs://order-5de62.appspot.com&quot;</span><span class="s1">).child(</span><span class="s2">&quot;img/</span><span class="s0">$</span><span class="s1">filename</span><span class="s2">&quot;</span><span class="s1">)</span>
+<a name="l79"><span class="ln">79   </span></a>
+<a name="l80"><span class="ln">80   </span></a>                holder.imgView.setImageResource(android.R.color.transparent)
+<a name="l81"><span class="ln">81   </span></a>
+<a name="l82"><span class="ln">82   </span></a>                storageRef.putFile(it).addOnSuccessListener {
+<a name="l83"><span class="ln">83   </span></a>                    progressDialog.dismiss()
+<a name="l84"><span class="ln">84   </span></a>                    Toast.makeText(activity.applicationContext<span class="s0">, </span><span class="s2">&quot;Success&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_LONG).show()</span>
+<a name="l85"><span class="ln">85   </span></a>                    FirebaseDatabase.getInstance().getReference(<span class="s2">&quot;menuList&quot;</span><span class="s1">).child(items[position].id.toString()).child(</span><span class="s2">&quot;img&quot;</span><span class="s1">).setValue((</span><span class="s3">0</span><span class="s1">..it.bytesTransferred).random())</span>
+<a name="l86"><span class="ln">86   </span></a>                    FirebaseStorage.getInstance().getReferenceFromUrl(<span class="s2">&quot;gs://order-5de62.appspot.com&quot;</span><span class="s1">)</span>
+<a name="l87"><span class="ln">87   </span></a>                        .child(<span class="s2">&quot;img/</span><span class="s0">${</span><span class="s1">items[position].id</span><span class="s0">}</span><span class="s2">.png&quot;</span><span class="s1">).downloadUrl.addOnSuccessListener {</span>
+<a name="l88"><span class="ln">88   </span></a>                        Glide.with(activity.applicationContext).load(it).into(holder.imgView)
+<a name="l89"><span class="ln">89   </span></a>                    }
+<a name="l90"><span class="ln">90   </span></a>                }
+<a name="l91"><span class="ln">91   </span></a>            }
+<a name="l92"><span class="ln">92   </span></a>        }
+<a name="l93"><span class="ln">93   </span></a>
+<a name="l94"><span class="ln">94   </span></a>        holder.deleteBtn.setOnClickListener {
+<a name="l95"><span class="ln">95   </span></a>            FirebaseDatabase.getInstance().getReference(<span class="s2">&quot;menuList&quot;</span><span class="s1">).child(items[position].id.toString()).removeValue()</span>
+<a name="l96"><span class="ln">96   </span></a>            <span class="s0">var </span><span class="s1">fbStorage = FirebaseStorage.getInstance().reference</span>
+<a name="l97"><span class="ln">97   </span></a>            fbStorage.child(<span class="s2">&quot;img/</span><span class="s0">${</span><span class="s1">items[position].id</span><span class="s0">}</span><span class="s2">.png&quot;</span><span class="s1">).delete().addOnSuccessListener { }</span>
+<a name="l98"><span class="ln">98   </span></a>            fragment.removeItem(position)
+<a name="l99"><span class="ln">99   </span></a>            fragment.count--
+<a name="l100"><span class="ln">100  </span></a>            fragment.last = fragment.menuList.last().id
+<a name="l101"><span class="ln">101  </span></a>        }
+<a name="l102"><span class="ln">102  </span></a>
+<a name="l103"><span class="ln">103  </span></a>        FirebaseStorage.getInstance().getReferenceFromUrl(<span class="s2">&quot;gs://order-5de62.appspot.com&quot;</span><span class="s1">)</span>
+<a name="l104"><span class="ln">104  </span></a>            .child(<span class="s2">&quot;img/</span><span class="s0">${</span><span class="s1">items[position].id</span><span class="s0">}</span><span class="s2">.png&quot;</span><span class="s1">).downloadUrl.addOnSuccessListener {</span>
+<a name="l105"><span class="ln">105  </span></a>            Glide.with(activity.applicationContext).load(it).apply(RequestOptions().override(<span class="s3">100</span><span class="s0">, </span><span class="s3">100</span><span class="s1">)).into(holder.imgView)</span>
+<a name="l106"><span class="ln">106  </span></a>        }.addOnCompleteListener {
+<a name="l107"><span class="ln">107  </span></a>            holder.progress.visibility = View.GONE
+<a name="l108"><span class="ln">108  </span></a>        }
+<a name="l109"><span class="ln">109  </span></a>
+<a name="l110"><span class="ln">110  </span></a>    }
+<a name="l111"><span class="ln">111  </span></a>
+<a name="l112"><span class="ln">112  </span></a>    inner <span class="s0">class </span><span class="s1">MainViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(</span>
+<a name="l113"><span class="ln">113  </span></a>        LayoutInflater.from(parent.context).inflate(R.layout.item_edit<span class="s0">, </span><span class="s1">parent</span><span class="s0">, false</span><span class="s1">)) {</span>
+<a name="l114"><span class="ln">114  </span></a>        <span class="s0">val </span><span class="s1">nameET = itemView.nameET</span>
+<a name="l115"><span class="ln">115  </span></a>        <span class="s0">val </span><span class="s1">priceET = itemView.priceET</span>
+<a name="l116"><span class="ln">116  </span></a>        <span class="s0">val </span><span class="s1">getImg = itemView.getImg</span>
+<a name="l117"><span class="ln">117  </span></a>        <span class="s0">val </span><span class="s1">imgView = itemView.imgView</span>
+<a name="l118"><span class="ln">118  </span></a>        <span class="s0">val </span><span class="s1">progress = itemView.loadProgress</span>
+<a name="l119"><span class="ln">119  </span></a>        <span class="s0">val </span><span class="s1">deleteBtn = itemView.deleteBtn</span>
+<a name="l120"><span class="ln">120  </span></a>
+<a name="l121"><span class="ln">121  </span></a>    }
+<a name="l122"><span class="ln">122  </span></a>}</pre>
+</body>
+</html>
